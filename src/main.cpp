@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <gmpxx.h> // Use GMP library to handle large integers
 #include "config.h" // Global configuration file
+#include "smoothness_bound.h"
 
 using namespace std;
 
@@ -29,6 +30,11 @@ int main() {
     }
 
     cout << "Factoring composite number: " << n << endl;
+
+    unsigned long B = chooseSmoothnessBound(n);
+    cout << "Chosen smoothness bound B: " << B << endl;
+
+    vector<mpz_class> factors;
 
     return EXIT_SUCCESS;
 }

@@ -4,4 +4,4 @@
 // Maximum number of digits allowed for the composite number
 #define MAX_DIGITS 100
 
-#endif
+#endif // CONFIG_H
