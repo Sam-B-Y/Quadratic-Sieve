@@ -5,7 +5,7 @@ CXX = g++
 CXXFLAGS = -std=c++11 -Wall -I/opt/homebrew/include # might need to adjust include path for GMP
 LDFLAGS = -L/opt/homebrew/lib -lgmpxx -lgmp # likewise, adjust library path for GMP
 
-SRC = src/main.cpp src/smoothness_bound.cpp
+SRC = src/main.cpp src/smoothness_bound.cpp src/factor_base.cpp
 OBJ = $(SRC:.cpp=.o)
 TARGET = quadratic_sieve
 

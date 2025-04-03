@@ -1,7 +1,7 @@
 #include "smoothness_bound.h"
 #include <cmath>
 
-unsigned long chooseSmoothnessBound(const mpz_class &n) {
+unsigned long smoothnessBound(const mpz_class &n) {
 
     // We can convert mpz_class to double, which is fine as we only need a rough estimate of the log
     double ln_n = log(n.get_d());

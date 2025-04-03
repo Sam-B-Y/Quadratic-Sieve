@@ -4,6 +4,7 @@
 #include <gmpxx.h> // Use GMP library to handle large integers
 #include "config.h" // Global configuration file
 #include "smoothness_bound.h"
+#include "factor_base.h"
 
 using namespace std;
 
@@ -31,10 +32,15 @@ int main() {
 
     cout << "Factoring composite number: " << n << endl;
 
-    unsigned long B = chooseSmoothnessBound(n);
-    cout << "Chosen smoothness bound B: " << B << endl;
+    unsigned long B = smoothnessBound(n);
+    cout << "Smoothness bound B: " << B << endl;
 
-    vector<mpz_class> factors;
+    std::vector<unsigned long> factorBase = generateFactorBase(B, n);
+    cout << "Factor base: ";
+    for (unsigned long prime : factorBase) {
+        cout << prime << " ";
+    }
+    cout << endl;
 
     return EXIT_SUCCESS;
 }

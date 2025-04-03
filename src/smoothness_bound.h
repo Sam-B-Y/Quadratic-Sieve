@@ -4,6 +4,6 @@
 #include <gmpxx.h>
 
 // Smoothness bound for the given composite number n
-unsigned long chooseSmoothnessBound(const mpz_class &n);
+unsigned long smoothnessBound(const mpz_class &n);
 
 #endif // SMOOTHNESS_BOUND_H
