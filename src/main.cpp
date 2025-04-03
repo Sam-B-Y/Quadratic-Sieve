@@ -30,8 +30,6 @@ int main() {
         return EXIT_FAILURE;
     }
 
-    cout << "Factoring composite number: " << n << endl;
-
     unsigned long B = smoothnessBound(n);
     cout << "Smoothness bound B: " << B << endl;
 
