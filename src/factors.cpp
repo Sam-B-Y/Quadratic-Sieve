@@ -1,7 +1,7 @@
-#include "factor_base.h"
+#include "factors.h"
 
 
-std::vector<unsigned long> generateFactorBase(unsigned long B, const mpz_class &n) {
+std::vector<unsigned long> generatefactors(unsigned long B, const mpz_class &n) {
     // Initally mark all numbers from 0 to B as prime
     std::vector<bool> is_prime(B + 1, true);
     is_prime[0] = is_prime[1] = false;
@@ -15,10 +15,10 @@ std::vector<unsigned long> generateFactorBase(unsigned long B, const mpz_class &
         }
     }
     
-    std::vector<unsigned long> factor_base;
+    std::vector<unsigned long> factors;
     
     if (B >= 2) {
-        factor_base.push_back(2);
+        factors.push_back(2);
     }
     
     // Iterate through odd primes
@@ -34,10 +34,10 @@ std::vector<unsigned long> generateFactorBase(unsigned long B, const mpz_class &
             mpz_powm(legendre_symbol.get_mpz_t(), n_mod_p.get_mpz_t(), exponent.get_mpz_t(), p.get_mpz_t()); // Might want to implement this manually
             
             if (legendre_symbol == 1) {
-                factor_base.push_back(i);
+                factors.push_back(i);
             }
         }
     }
     
-    return factor_base;
+    return factors;
 }
