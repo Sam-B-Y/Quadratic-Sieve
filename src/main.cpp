@@ -34,6 +34,11 @@ int main() {
         }
     }
 
+    if(nStr.length() > MAX_DIGITS) { // Only proceed if the number of digits isn't too long
+        cerr << "Error: Number exceeds the maximum allowed digit limit of " << MAX_DIGITS << "." << endl;
+        return EXIT_FAILURE;
+    }
+
     mpz_class n(nStr); // n stores the composite number as a GMP integer
     unordered_set<unsigned long> final_factors; // Set to store the final factors (avoiding duplicates)
 
@@ -52,7 +57,7 @@ int main() {
 
     // Miller-Rabin strong probable prime test: if n is prime, do not proceed 
     if (isProbablePrime(n, MAX_ITERATIONS)) {
-        
+
         // If n is prime and has factors, we are done
         if (!final_factors.empty()) {
             if (n != 1) {
@@ -68,11 +73,6 @@ int main() {
     }
 
     cout << "Miller-Rabin passed: number is likely composite." << endl;
-
-    if(nStr.length() > MAX_DIGITS) { // Only proceed if the number of digits isn't too long
-        cerr << "Error: Number exceeds the maximum allowed digit limit of " << MAX_DIGITS << "." << endl;
-        return EXIT_FAILURE;
-    }
 
     unsigned long B = smoothnessBound(n);
     cout << "Smoothness bound B: " << B << endl;
