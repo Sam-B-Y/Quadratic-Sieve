@@ -12,19 +12,24 @@
 using namespace std;
 
 int print_factors_set(const unordered_set<unsigned long> &factors) {
-    cout << string(60, '-') << endl;
+    if (VERBOSE){
+        cout << string(60, '-') << endl;
+    }
     cout << "Final Factor(s): ";
+
+    // sort the factors in ascending order
+    vector<unsigned long> sorted_factors(factors.begin(), factors.end());
+    sort(sorted_factors.begin(), sorted_factors.end());
+
     for (const auto &factor : factors) {
         cout << factor << " ";
     }
     cout << endl;
     return 0;
 }
-
+ 
 int main() {
-    
     // Promt user for composite number n
-
     string nStr;
     cout << "Enter composite number n: ";
     cin >> nStr;
@@ -41,6 +46,10 @@ int main() {
         return EXIT_FAILURE;
     }
 
+    if (VERBOSE) { 
+        cout << string(60, '-') << endl;
+    }
+
     mpz_class n(nStr); // n stores the composite number as a GMP integer
     unordered_set<unsigned long> final_factors; // Set to store the final factors (avoiding duplicates)
     
@@ -48,7 +57,9 @@ int main() {
 
     double n_d = n.get_d(); // we can use double as we don't need precision here
     unsigned long limit = static_cast<unsigned long>(ceil(log(n_d)));
-    cout << "Finding factors up to log(n) = " << limit << " using brute force" << endl;
+    if (VERBOSE) { 
+        cout << "Finding factors up to log(n) = " << limit << " using brute force" << endl;
+    }
 
     while (n % 2 == 0) {
         final_factors.insert(2);
@@ -60,6 +71,7 @@ int main() {
     if (limit >= 0) {
         is_prime[0] = is_prime[1] = false;
     }
+
     for (unsigned long i = 2; i * i <= limit; ++i) {
         if (is_prime[i]) {
             for (unsigned long j = i * i; j <= limit; j += i) {
@@ -79,7 +91,9 @@ int main() {
     for (unsigned long p : primes) {
         while (n % p == 0) { // keep dividing n by p until it is no longer divisible
             if (final_factors.find(p) == final_factors.end()) { 
-                cout << "Removed factor: " << p << endl;
+                if (VERBOSE) { 
+                    cout << "Removed factor: " << p << endl;
+                }
                 final_factors.insert(p);
             }
             n /= p;
@@ -91,16 +105,16 @@ int main() {
         return EXIT_SUCCESS;
     }
 
-    cout << "Remaining number after removing small factors: " << n << endl;
+    if (VERBOSE) { 
+        cout << "Remaining number after removing small factors: " << n << endl;
+    }
 
     // Miller-Rabin strong probable prime test: if n is prime, do not proceed 
     if (isProbablePrime(n, MAX_ITERATIONS)) {
-        
         if (final_factors.empty()) {
             // If n is prime and has no factors, error out
             cerr << "Error: The number is prime. Enter a composite number." << endl;
             return EXIT_FAILURE;
-            
         }
 
         // If n is prime and has factors, we are done
@@ -110,20 +124,25 @@ int main() {
         
         print_factors_set(final_factors);
         return EXIT_SUCCESS;
-
     }
 
-    cout << "Miller-Rabin passed: number is likely composite." << endl;
+    if (VERBOSE) { 
+        cout << "Miller-Rabin passed: number is likely composite." << endl;
+    }
 
     unsigned long B = smoothnessBound(n);
-    cout << "Smoothness bound B: " << B << endl;
-
-    std::vector<unsigned long> potential_factors = generatefactors(B, n);
-    cout << "Potential prime factors: ";
-    for (unsigned long prime : potential_factors) {
-        cout << prime << " ";
+    if (VERBOSE) { 
+        cout << "Smoothness bound B: " << B << endl;
     }
-    cout << endl;
+
+    vector<unsigned long> potential_factors = generatefactors(B, n);
+    if (VERBOSE) { 
+        cout << "Potential prime factors: ";
+        for (unsigned long prime : potential_factors) {
+            cout << prime << " ";
+        }
+        cout << endl;
+    }
 
     return EXIT_SUCCESS;
 }

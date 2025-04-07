@@ -7,4 +7,7 @@
 // Maximum number of iterations for the Miller-Rabin test
 #define MAX_ITERATIONS 20
 
+// Print out info messages
+#define VERBOSE 1
+
 #endif // CONFIG_H
