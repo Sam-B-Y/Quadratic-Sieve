@@ -8,6 +8,7 @@
 #include "smoothness_bound.h" 
 #include "factors.h"
 #include "probable_prime.h"
+#include "gcd.h"
 
 using namespace std;
 

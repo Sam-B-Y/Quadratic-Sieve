@@ -1,6 +1,5 @@
 #include "factors.h"
 
-
 std::vector<unsigned long> generatefactors(unsigned long B, const mpz_class &n) {
     // Initally mark all numbers from 0 to B as prime
     std::vector<bool> is_prime(B + 1, true);
