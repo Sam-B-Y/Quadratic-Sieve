@@ -12,7 +12,8 @@
 using namespace std;
 
 int print_factors_set(const unordered_set<unsigned long> &factors) {
-    cout << "Factor(s): ";
+    cout << string(60, '-') << endl;
+    cout << "Final Factor(s): ";
     for (const auto &factor : factors) {
         cout << factor << " ";
     }
@@ -47,7 +48,7 @@ int main() {
 
     double n_d = n.get_d(); // we can use double as we don't need precision here
     unsigned long limit = static_cast<unsigned long>(ceil(log(n_d)));
-    cout << "Finding factors up to log(n): " << limit << endl;
+    cout << "Finding factors up to log(n) = " << limit << " using brute force" << endl;
 
     while (n % 2 == 0) {
         final_factors.insert(2);
