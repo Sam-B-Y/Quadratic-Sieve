@@ -156,16 +156,16 @@ int main() {
     map<unsigned long, unsigned int> factorization = factorPolynomial(a, factor_base);
 
     for(const auto &pair : factorization) {
-        cout << "Factor: " << pair.first << ", Exponent: " << pair.second << std::endl;
+        cout << "Factor: " << pair.first << ", Exponent: " << pair.second << endl;
     }
     */
 
 
 // EXample from the textbook:
-   std::vector<unsigned long> factor_base = {2, 3, 5, 7, 11, 13, 17, 19};
+   vector<unsigned long> factor_base = {2, 3, 5, 7, 11, 13, 17, 19};
     
    // Build a vector of SmoothRelation objects using the provided example data.
-   std::vector<SmoothRelation> relations;
+   vector<SmoothRelation> relations;
    
    // Relation 0: 9398 → exponents: 0,0,5,0,0,0,0,1.
    {
@@ -252,12 +252,12 @@ int main() {
        relations.push_back(r);
    }
    
-   std::vector<bool> dependency = findSquareSubset(relations, factor_base);
+   vector<bool> dependency = findSquareSubset(relations, factor_base);
    
    // Print out the dependency vector.
-   std::cout << "Dependency vector (true indicates the relation is used):" << std::endl;
+   cout << "Dependency vector (true indicates the relation is used):" << endl;
    for (size_t i = 0; i < dependency.size(); ++i) {
-       std::cout << "Relation " << i << ": " << (dependency[i] ? "true" : "false") << std::endl;
+       cout << "Relation " << i << ": " << (dependency[i] ? "true" : "false") << endl;
    }
 
     return EXIT_SUCCESS;
