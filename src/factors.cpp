@@ -1,5 +1,6 @@
 #include "factors.h"
-
+#include <iostream>
+#include <vector>
 std::vector<unsigned long> generatefactors(unsigned long B, const mpz_class &n) {
     // Initally mark all numbers from 0 to B as prime
     std::vector<bool> is_prime(B + 1, true);
@@ -13,11 +14,17 @@ std::vector<unsigned long> generatefactors(unsigned long B, const mpz_class &n) 
             }
         }
     }
+
+    // std::cout << "Prints whether x in [0,B] is prime: ";
+    // for (unsigned long prime : is_prime) {
+    //     std::cout << prime << " ";
+    // }
+
+
+    std::vector<unsigned long> factor_base;
     
-    std::vector<unsigned long> factors;
-    
-    if (B >= 2) {
-        factors.push_back(2);
+    if (B >= 2) { 
+        factor_base.push_back(2);
     }
     
     // Iterate through odd primes
@@ -32,11 +39,11 @@ std::vector<unsigned long> generatefactors(unsigned long B, const mpz_class &n) 
 
             mpz_powm(legendre_symbol.get_mpz_t(), n_mod_p.get_mpz_t(), exponent.get_mpz_t(), p.get_mpz_t()); // Might want to implement this manually
             
-            if (legendre_symbol == 1) {
-                factors.push_back(i);
+            if (legendre_symbol == 1 || legendre_symbol == 0) { //if 0, then p divides n shld add a special case
+                factor_base.push_back(i);
             }
         }
     }
     
-    return factors;
+    return factor_base;
 }
