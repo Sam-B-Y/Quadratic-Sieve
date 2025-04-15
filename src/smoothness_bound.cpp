@@ -1,5 +1,4 @@
 #include "smoothness_bound.h"
-#include <cmath>
 #include "config.h"
 
 unsigned long smoothnessBound(const mpz_class &n)

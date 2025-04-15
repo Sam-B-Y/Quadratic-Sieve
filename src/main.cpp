@@ -255,7 +255,7 @@ int main()
                 continue;
             }
 
-            cout << "\nFound " << dependencies.size() << " dependency vector(s):" << endl;
+            cout << "\nFound " << dependencies.size() << " dependency vector(s)." << endl;
 
             mpz_class factor;
             bool found = false;

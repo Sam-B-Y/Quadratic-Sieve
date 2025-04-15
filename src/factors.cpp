@@ -1,6 +1,4 @@
 #include "factors.h"
-#include <iostream>
-#include <vector>
 
 std::pair<std::vector<unsigned long>, std::vector<unsigned long>> generateFactorBase(unsigned long B, const mpz_class &n)
 {

@@ -2,7 +2,6 @@
 #define SMOOTH_RELATIONS_H
 
 #include <gmpxx.h>
-#include <iostream>
 #include <map>
 
 struct Relation
