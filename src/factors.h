@@ -5,6 +5,6 @@
 #include <gmpxx.h>
 
 // Generates the primes from 2 to B for which n is a quadratic residue modulo p
-std::vector<unsigned long> generatefactors(unsigned long B, const mpz_class &n);
+std::pair<std::vector<unsigned long>, std::vector<unsigned long>> generateFactorBase(unsigned long B, const mpz_class &n);
 
 #endif // FACTORS_H

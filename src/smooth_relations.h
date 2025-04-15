@@ -3,20 +3,24 @@
 
 #include <gmpxx.h>
 #include <iostream>
-#include <vector>
 #include <map>
-#include "smooth_relations.h"
 
-// given a number f, write it as a product of the factor base 
-std::map<unsigned long, unsigned int> factorPolynomial(const mpz_class f, const std::vector<unsigned long> factor_base);
-
-struct SmoothRelation {
+struct Relation
+{
     mpz_class x;
-    mpz_class fx; //x^2 - n
-    std::map<unsigned long, unsigned int> factorization;
-    bool isNegative;
+    mpz_class Q;                // Q(x) = x^2 - N
+    std::vector<int> exponents; // Exponent vector (mod 2)
 };
 
-// running for root n, collect b-smooth values
-std::vector<SmoothRelation> findSmoothRelations(const mpz_class &n, const std::vector<unsigned long> &factor_base, unsigned long required_relations);
+// Function to find B-smooth relations
+std::vector<Relation> find_smooth_relations(
+    const mpz_class &N,
+    const std::vector<unsigned long> &factor_base,
+    unsigned long sieve_interval,
+    std::vector<Relation> &existing_relations,
+    mpz_class &start_x);
+
+// Compute ceil(sqrt(n))
+mpz_class isqrt(const mpz_class &n);
+
 #endif // SMOOTH_RELATIONS_H
