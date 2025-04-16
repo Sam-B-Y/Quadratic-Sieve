@@ -8,16 +8,17 @@ mpz_class isqrt(const mpz_class &n)
     mpz_class root;
     mpz_sqrt(root.get_mpz_t(), n.get_mpz_t());
     if (root * root < n)
-        root += 1;
+        root += 1; //so that we returnt the ceiling of sqrt n. 
     return root;
 }
 
 // Fast modular exponentiation for unsigned long integers
+// just uses bitwise shifing and squaring
 unsigned long mod_exp(unsigned long base, unsigned long exp, unsigned long mod)
 {
     unsigned long result = 1;
     base %= mod;
-    while (exp > 0)
+    while (exp > 0) // iteration over each bit
     {
         if (exp & 1)
             result = (result * base) % mod;
@@ -27,6 +28,9 @@ unsigned long mod_exp(unsigned long base, unsigned long exp, unsigned long mod)
     return result;
 }
 
+// Tonelli-Shanks algorithm for finding square roots modulo p
+// outputs the square roots x where x^2 = a mod p
+// as seen in https://en.wikipedia.org/wiki/Tonelli%E2%80%93Shanks_algorithm
 vector<unsigned long> tonelli_shanks(const mpz_class &a_mpz, unsigned long p)
 {
     vector<unsigned long> sol;
@@ -39,13 +43,14 @@ vector<unsigned long> tonelli_shanks(const mpz_class &a_mpz, unsigned long p)
     // Work with unsigned long: a = a mod p.
     unsigned long a = mpz_class(a_mpz % p).get_ui();
 
-    // Check if a is a quadratic residue mod p.
+    // Check if a is a quadratic residue mod p. 
+    // requirement for the algorithm
     if (mod_exp(a, (p - 1) / 2, p) != 1)
     {
         return sol;
     }
 
-    // Write p-1 as Q * 2^S with Q odd
+    // 1. Write p-1 as Q * 2^S with Q odd
     unsigned long S = 0;
     unsigned long Q = p - 1;
     while ((Q & 1UL) == 0)
@@ -53,41 +58,44 @@ vector<unsigned long> tonelli_shanks(const mpz_class &a_mpz, unsigned long p)
         Q >>= 1;
         S++;
     }
-    // Find a quadratic non-residue z
+    //2.  Find a quadratic non-residue z
     unsigned long z = 2;
     while (mod_exp(z, (p - 1) / 2, p) == 1)
     {
         z++;
     }
 
+    //3. defintions
     unsigned long c = mod_exp(z, Q, p);
     unsigned long R = mod_exp(a, (Q + 1) / 2, p);
     unsigned long t = mod_exp(a, Q, p);
     unsigned long M = S;
 
+
+    //4. loop
     while (t != 1)
     {
         // Find the smallest integer i (0 < i < M) such that t^(2^i) ≡ 1 (mod p)
         unsigned long temp = t;
         unsigned long i = 0;
-        for (; i < M; i++)
+        for (; i < M; i++) 
         {
             if (temp == 1)
             {
                 break;
             }
-            temp = (temp * temp) % p;
+            temp = (temp * temp) % p; //squares have happened 2^i times at this step
         }
 
         // Compute b = c^(2^(M-i-1)) mod p
-        unsigned long exp = 1UL << (M - i - 1);
+        unsigned long exp = 1UL << (M - i - 1); // exp = 2^{M - i - 1} (just faster using bit manipulation)
         unsigned long b = mod_exp(c, exp, p);
         R = (R * b) % p;
         t = (t * b * b) % p;
         c = (b * b) % p;
         M = i;
     }
-    sol.push_back(R);
+    sol.push_back(R); //first sol
 
     // The other solution is p - R
     if (R != 0)
@@ -98,6 +106,7 @@ vector<unsigned long> tonelli_shanks(const mpz_class &a_mpz, unsigned long p)
     return sol;
 }
 
+// finds B-smooth values over a given interval
 vector<Relation> find_smooth_relations(const mpz_class &N,
                                        const vector<unsigned long> &factor_base,
                                        unsigned long sieve_interval,
@@ -120,22 +129,23 @@ vector<Relation> find_smooth_relations(const mpz_class &N,
     mpz_class example_qx;
 
     // More efficient polynomial evaluation (x^2 - N)
-    mpz_mul(example_qx.get_mpz_t(), example_x.get_mpz_t(), example_x.get_mpz_t());
+    mpz_mul(example_qx.get_mpz_t(), example_x.get_mpz_t(), example_x.get_mpz_t()); //approximate log of x^2 - N
     example_qx -= N;
 
+    // settting the threshold for the sieve
     double example_log = log(abs(example_qx.get_d()));
     for (unsigned long p : factor_base)
     {
         log_threshold += log(p);
         if (log_threshold >= example_log)
         {
-            break;
+            break; // this is threshold
         }
     }
 
-    log_threshold = example_log * 0.95;
+    log_threshold = example_log * 0.95; // this is just to account for floating point errors
 
-    vector<double> sieve_array(sieve_interval, 0.0);
+    vector<double> sieve_array(sieve_interval, 0.0); 
 
 // Initialize sieve_array with logarithmic values of x^2 - N
 #pragma omp parallel for // parallelize the initialization of sieve_array
@@ -175,7 +185,7 @@ vector<Relation> find_smooth_relations(const mpz_class &N,
         unsigned long p = factor_base[idx];
         double log_p = log_factor_base[idx];
 
-        // Handle p = 2 specially
+        // handling p = 2 specially
         if (p == 2)
         {
             for (unsigned long i = 0; i < sieve_interval; i++)
@@ -195,6 +205,7 @@ vector<Relation> find_smooth_relations(const mpz_class &N,
             continue;
         }
 
+        // using tonelli shanks to find solutions quickly
         vector<unsigned long> sols = tonelli_shanks(N, p);
         if (sols.empty())
             continue;
@@ -266,7 +277,7 @@ vector<Relation> find_smooth_relations(const mpz_class &N,
                 rel.x = start_x + i;
                 rel.Q = q_values[i];
 
-                // Build the exponent vector
+                // Build the exponent vector mod 2
                 vector<int> vec;
 
                 // For sign: if Q(x) is negative, record a 1 for -1
@@ -286,7 +297,7 @@ vector<Relation> find_smooth_relations(const mpz_class &N,
                         mpz_divexact_ui(temp.get_mpz_t(), temp.get_mpz_t(), p);
                         count++;
                     }
-                    vec.push_back(count % 2);
+                    vec.push_back(count % 2); // add the exponent mod 2
                 }
 
                 rel.exponents = vec;

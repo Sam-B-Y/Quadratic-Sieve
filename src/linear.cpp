@@ -2,6 +2,7 @@
 #include "smooth_relations.h"
 #include <omp.h>
 
+// performs gaussian eliminiation on a mod 2 matrix
 bool gaussian_elimination_all(const std::vector<std::vector<int>> &M_input, std::vector<std::vector<int>> &dependencies)
 {
     int m = M_input.size();
@@ -13,6 +14,7 @@ bool gaussian_elimination_all(const std::vector<std::vector<int>> &M_input, std:
     std::vector<std::vector<int>> M = M_input;
 
     // T will be an m x m identity matrix that tracks row operations
+    // will be used to remake the relationships that have dependencies
     std::vector<std::vector<int>> T(m, std::vector<int>(m, 0));
 
 #pragma omp parallel for
