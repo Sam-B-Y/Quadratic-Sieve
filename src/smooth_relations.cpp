@@ -122,29 +122,6 @@ vector<Relation> find_smooth_relations(const mpz_class &N,
         log_factor_base[i] = log(factor_base[i]);
     }
 
-    double log_threshold = 0;
-
-    // Calculate approximate threshold for B-smoothness
-    mpz_class example_x = start_x;
-    mpz_class example_qx;
-
-    // More efficient polynomial evaluation (x^2 - N)
-    mpz_mul(example_qx.get_mpz_t(), example_x.get_mpz_t(), example_x.get_mpz_t()); //approximate log of x^2 - N
-    example_qx -= N;
-
-    // settting the threshold for the sieve
-    double example_log = log(abs(example_qx.get_d()));
-    for (unsigned long p : factor_base)
-    {
-        log_threshold += log(p);
-        if (log_threshold >= example_log)
-        {
-            break; // this is threshold
-        }
-    }
-
-    log_threshold = example_log * 0.95; // this is just to account for floating point errors
-
     vector<double> sieve_array(sieve_interval, 0.0); 
 
 // Initialize sieve_array with logarithmic values of x^2 - N
