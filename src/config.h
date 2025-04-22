@@ -11,7 +11,7 @@
 #define VERBOSE 1
 
 // Exit if Miller-Rabin test fails
-#define EXIT_ON_MILLER_RABIN_FAIL 0
+#define EXIT_ON_MILLER_RABIN_FAIL 1
 
 // Minimum smoothness bound
 #define MIN_SMOOTHNESS_BOUND 1000
