@@ -2,7 +2,10 @@
 #define CONFIG_H
 
 // Maximum number of digits allowed for the composite number
-#define MAX_DIGITS 100
+#define MAX_DIGITS 60
+
+// Constant for the smoothness bound
+#define B_CONSTANT 0.05
 
 // Maximum number of iterations for the Miller-Rabin test
 #define MAX_ITERATIONS 20

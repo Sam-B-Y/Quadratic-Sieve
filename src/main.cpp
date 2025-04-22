@@ -159,8 +159,6 @@ int main()
         cout << "Miller-Rabin passed: number is likely composite." << endl;
     }
 
-    // TODO add check for n being a power using Newton's method
-
     // Check if n is a perfect square
     mpz_class sqrt_n;
     mpz_sqrt(sqrt_n.get_mpz_t(), n.get_mpz_t());

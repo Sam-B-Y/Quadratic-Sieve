@@ -9,7 +9,7 @@ unsigned long smoothnessBound(const mpz_class &n)
     double ln_ln_n = log(ln_n);
 
     // Calculate the smoothness bound B using chosen formula
-    double B_double = exp(0.55 * sqrt(ln_n * ln_ln_n));
+    double B_double = exp((0.5 + B_CONSTANT) * sqrt(ln_n * ln_ln_n));
     unsigned long B = static_cast<unsigned long>(B_double);
 
     if (B < 2)
