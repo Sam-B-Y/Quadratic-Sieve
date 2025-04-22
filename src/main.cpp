@@ -215,8 +215,6 @@ int main()
         cout << endl;
     }
 
-    mpz_sqrt(sqrt_n.get_mpz_t(), n.get_mpz_t());
-
     // ceil
     sqrt_n = isqrt(n);
 
