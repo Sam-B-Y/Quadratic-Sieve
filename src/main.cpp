@@ -161,6 +161,18 @@ int main()
 
     // TODO add check for n being a power using Newton's method
 
+    // Check if n is a perfect square
+    mpz_class sqrt_n;
+    mpz_sqrt(sqrt_n.get_mpz_t(), n.get_mpz_t());
+    if (sqrt_n * sqrt_n == n)
+    {
+        cout << "Perfect square found: " << sqrt_n << endl;
+        final_factors.insert(sqrt_n);
+        final_factors.insert(sqrt_n);
+        print_factors_set(final_factors, start);
+        return EXIT_SUCCESS;
+    }
+
     unsigned long B = smoothnessBound(n);
     if (VERBOSE)
     {
@@ -203,7 +215,6 @@ int main()
         cout << endl;
     }
 
-    mpz_class sqrt_n;
     mpz_sqrt(sqrt_n.get_mpz_t(), n.get_mpz_t());
 
     // ceil
