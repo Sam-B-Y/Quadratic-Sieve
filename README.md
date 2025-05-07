@@ -1,6 +1,6 @@
 # Quadratic Sieve Implementation
 
-A C++ implementation of the Quadratic Sieve algorithm for integer factorization, optimized with OpenMP parallelization.
+A C++ implementation of the Quadratic Sieve algorithm for integer factorization, optimized with OpenMP parallelization. Read the Write-Up file for more details on the implementation.
 
 ## Overview
 
